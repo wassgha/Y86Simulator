@@ -8,12 +8,14 @@
 public class Flags
 {
     private boolean z, s, o;
+    private String status;
 
     public Flags()
     {
         z = false;
         s = false;
         o = false;
+        status = "AOK";
     }
     
     public void setZ(boolean z)
@@ -31,6 +33,11 @@ public class Flags
         this.o = o;
     }
 
+    public void setStatus(String status)
+    {
+        this.status = status;
+    }
+
     public boolean getZ()
     {
         return this.z;
@@ -44,5 +51,10 @@ public class Flags
     public boolean getO()
     {
         return this.o;
+    }
+    
+    public String getStatus()
+    {
+        return this.status;
     }
 }

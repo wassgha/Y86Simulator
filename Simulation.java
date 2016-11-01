@@ -118,7 +118,7 @@ public class Simulation extends JFrame implements ActionListener
         p2.add(o_val);
 
         p2.add(new JLabel("Status: ", SwingConstants.CENTER));
-        status_val = new JTextField("HLT");
+        status_val = new JTextField(machine.flags.getStatus());
         status_val.setEditable(false);
         p2.add(status_val);
 
@@ -292,6 +292,7 @@ public class Simulation extends JFrame implements ActionListener
      * and memory contents in the GUI
      */
     public void updateState() {
+        // Update special registers
         pc_val.setText(machine.pc.readHex());
         ir_val.setText(machine.ir.readHex());
         c_val.setText(machine.c.readHex());
@@ -300,10 +301,18 @@ public class Simulation extends JFrame implements ActionListener
         md_val.setText(machine.md.readHex());
         pc_val.setText(machine.pc.readHex());
         
+        // Update flags and status
+        z_val.setText(machine.flags.getZ()?"1":"0");
+        s_val.setText(machine.flags.getS()?"1":"0");
+        o_val.setText(machine.flags.getO()?"1":"0");
+        status_val.setText(machine.flags.getStatus());
+        
+        // Update general registers
         for (int i = 0; i<numReg; i++) {
             register_vals[i].setText(machine.register[i].readHex());
         }
         
+        // Redraw memory table
         drawMemory();
     }
     
