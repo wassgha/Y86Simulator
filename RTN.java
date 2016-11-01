@@ -59,8 +59,8 @@ public class RTN
             opCode.put("jg", (byte)0x76);        
             opCode.put("call", (byte)0x80);        
             opCode.put("ret", (byte)0x90);        
-            opCode.put("pushl", (byte)0xA0);        
-            opCode.put("popl", (byte)0xB0);
+            opCode.put("pushq", (byte)0xA0);        
+            opCode.put("popq", (byte)0xB0);
     
             // Fill Reverse Operation Code Table
             //         revOpCode = new HashMap<Byte, String>();

@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=machine\ RTNDefinition\ allowedALUOps
-comment0.target=Microcode(Machine,\ RTN,\ java.lang.String[])
+comment0.params=machine
+comment0.target=Microcode(Machine)
 comment1.params=
 comment1.target=void\ fetchExec()
 comment2.params=instruction\ fetch

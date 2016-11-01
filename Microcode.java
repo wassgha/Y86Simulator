@@ -13,15 +13,11 @@ public class Microcode
 {
     HashMap<String, Byte> opCode;
     HashMap<String, Byte> regCode;
-    RTN RTNDefinition;
     Machine machine;
-    String[] allowedALUOps;
     
-    public Microcode(Machine machine, RTN RTNDefinition, String[] allowedALUOps)
+    public Microcode(Machine machine)
     {
-        this.RTNDefinition = RTNDefinition;
         this.machine = machine;
-        this.allowedALUOps = allowedALUOps;
     }
     
     public void fetchExec() {
@@ -32,15 +28,22 @@ public class Microcode
     }
     
     public void executeRTNOperations(byte[] instruction, boolean fetch) {
+        // If instruction is halt then terminate
+        if(instruction[0] == 0x0){
+            machine.flags.setStatus("HLT");
+            return;
+        }
+        
+        // else get RTN for instruction and execute it
         ArrayList<Operands> instructionOperations;
 
         // Get the list of RTN operations necessary to execute the Y86 instruction
         if (fetch)
             // if this is a fetch operation then get the RTN definition for the fetch operation
-            instructionOperations = RTNDefinition.getFetchRTN();
+            instructionOperations = machine.RTNDefinition.getFetchRTN();
         else
             // else get RTN operations for the instruction based on the first byte (instruction code)
-            instructionOperations = RTNDefinition.getRTN(instruction[0]);
+            instructionOperations = machine.RTNDefinition.getRTN(instruction[0]);
             
         if (instructionOperations == null) {
             System.out.println("Could not resolve RTN definition for instruction " + String.format("0x%08X", instruction[0]));
@@ -51,7 +54,7 @@ public class Microcode
             if (operation.left.equals("C")) {
                 // Operation has to be handled by the ALU
                 boolean foundOp = false;
-                for (String ALUOp : allowedALUOps) {
+                for (String ALUOp : machine.allowedALUOps) {
                     if (operation.right.indexOf(ALUOp) != -1) {
                         String[] arithOperands = operation.right.split("\\" + ALUOp);
                         if(arithOperands[0].equals("A")) {
@@ -74,7 +77,7 @@ public class Microcode
                     }
                 }
                 if (!foundOp) {
-                    System.out.println("Unauthorized arithmetic operation (" + operation.right + "). Allowed operations are : " + Arrays.toString(allowedALUOps));
+                    System.out.println("Unauthorized arithmetic operation (" + operation.right + "). Allowed operations are : " + Arrays.toString(machine.allowedALUOps));
                     return;
                 }
            } else if (operation.right.equals("M[MA]")) {

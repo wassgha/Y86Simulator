@@ -58,3 +58,13 @@ xorq:
 	A←R[arg1]
 	C←A^R[arg2]
 	R[arg2]←C
+
+halt:
+
+pushq:
+
+popq:
+
+call:
+
+ret:

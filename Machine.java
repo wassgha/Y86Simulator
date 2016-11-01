@@ -31,7 +31,7 @@ public class Machine
         this.allowedALUOps = allowedALUOps;
         
         this.RTNDefinition = new RTN(RTNFile);
-        this.microcode = new Microcode(this, RTNDefinition, allowedALUOps);
+        this.microcode = new Microcode(this);
         
         this.register = new Register[numReg];
         for (int i = 0; i<numReg; i++){
@@ -55,6 +55,7 @@ public class Machine
     }
     
     public void run() {
-        microcode.fetchExec();
+        if(flags.getStatus() != "HLT")
+            microcode.fetchExec();
     }
 }
