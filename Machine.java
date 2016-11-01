@@ -55,7 +55,11 @@ public class Machine
     }
     
     public void run() {
-        if(flags.getStatus() != "HLT")
+        // Fetch and execute next instruction unless status is HLT or INS or ADR
+        // ADR: An addressing error has occurred.
+        // INS: An illegal instruction was encountered.
+        // HLT: A halt instruction was encountered
+        if(flags.getStatus() == "AOK")
             microcode.fetchExec();
     }
 }

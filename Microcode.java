@@ -124,6 +124,7 @@ public class Microcode
                 machine.alu.or();
                 break;
             default :
+                machine.flags.setStatus("INS");
                 System.out.println("Unsupported ALU instruction (" + ALUOp + ")");
                 break;
         }
@@ -183,6 +184,7 @@ public class Microcode
                 }
                 break;
            default: 
+                machine.flags.setStatus("INS");
                 System.out.println("Could not resolve value to be assigned (" + operand + ")");
                 return;
         }
@@ -227,6 +229,7 @@ public class Microcode
                 machine.register[instruction_arg_2].write(valueToWrite);
                 break;
            default: 
+                machine.flags.setStatus("INS");
                 System.out.println("Could not resolve write medium (" + operand + ")");
                 return;
         }
