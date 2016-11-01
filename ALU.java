@@ -27,4 +27,35 @@ public class ALU
         int busData = bus.readInt();
         c.writeInt(val + busData);
     }
+
+    public void subtract() {
+        int aData = a.readInt();
+        int busData = bus.readInt();
+        c.writeInt(aData - busData);
+    }
+
+    public void multiply() {
+        int aData = a.readInt();
+        int busData = bus.readInt();
+        c.writeInt(aData * busData);
+    }
+
+    public void and() {
+        int aData = a.readInt();
+        int busData = bus.readInt();
+        c.writeInt(aData & busData);
+    }
+
+    public void or() {
+        int aData = a.readInt();
+        int busData = bus.readInt();
+        c.writeInt(aData | busData);
+    }
+
+    public void xor() {
+        int aData = a.readInt();
+        int busData = bus.readInt();
+        c.writeInt(aData & busData);
+    }
+
 }
