@@ -5,10 +5,11 @@ import java.util.*;
 
 
 /**
- * Simulation GUI
+ * Simulation GUI (to run the Y86 simulation, please run this class)
  * 
  * @author Wassim Gharbi
  */
+
 public class Simulation extends JFrame implements ActionListener
 {
     // instance variables - replace the example below with your own
@@ -28,6 +29,10 @@ public class Simulation extends JFrame implements ActionListener
     private RunTask runTask;
     private java.util.Timer timer;
     private boolean isRunning=false;
+    
+    public static void main(String[] args) {
+        Simulation simulation = new Simulation();
+    }
     
     /**
      * Constructor for objects of class CS203_GUI
@@ -210,7 +215,7 @@ public class Simulation extends JFrame implements ActionListener
         } else if(evt.getActionCommand().equals("Load")) {
             
             // Writes the program to Main Memory
-            writeProgram();
+            writeDemoProgram();
             
         } else if(evt.getActionCommand().equals("Reset")) {
             
@@ -223,7 +228,7 @@ public class Simulation extends JFrame implements ActionListener
             // a timer to run a set every second
             if (!isRunning) {
                 timer = new java.util.Timer();
-                timer.schedule(new RunTask(), 0, 1000);
+                timer.schedule(new RunTask(), 0, 500);
                 isRunning = true;
             }
             
@@ -300,7 +305,7 @@ public class Simulation extends JFrame implements ActionListener
         drawMemory();
     }
     
-    public void writeProgram() {
+    public void writeDemoProgram() {
         // pos 0
         machine.mainMem.write(0, new byte[]{0x0, 0x0, 0x0, 0x0});
         // irmovq 0x666, %r1
