@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.params=busSize
+comment0.target=Bus(int)
+comment1.params=stream
+comment1.target=void\ write(byte[])
+comment1.text=\n\ Write\ to\ bus\ (word\ sized\ data)\n\ \n\ @param\ \ stream\ the\ data\ to\ write\n
+comment2.params=stream
+comment2.target=void\ writeInt(int)
+comment2.text=\n\ Write\ to\ bus\ (an\ integer)\n\ \n\ @param\ \ stream\ the\ data\ to\ write\n
+comment3.params=
+comment3.target=byte[]\ read()
+comment3.text=\n\ Access\ bus\ data\ (word)\n\ \n\ @return\ data\ in\ bus\n
+comment4.params=
+comment4.target=int\ readInt()
+comment4.text=\n\ Access\ bus\ data\ (as\ integer)\n\ \n\ @return\ data\ in\ bus\n
+comment5.params=
+comment5.target=java.lang.String\ readHex()
+comment5.text=\n\ Access\ bus\ data\ (as\ a\ hex\ string)\n\ \n\ @return\ data\ in\ bus\n
+numComments=6

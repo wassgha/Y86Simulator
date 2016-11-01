@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.params=filename
+comment0.target=RTN(java.lang.String)
+comment1.params=
+comment1.target=void\ y86Init()
+comment2.params=filename
+comment2.target=void\ parseInstructions(java.lang.String)
+comment2.text=\n\ Method\ parseInstructions\ reads\ the\ RTN\ File\ and\ stores\ the\ series\ of\ RTN\ instructions\n\ necessary\ to\ accomplish\ every\ ISA\ instruction.\n\n\ @param\ filename\ The\ path\ to\ the\ RTN\ File\n
+comment3.params=instruction
+comment3.target=java.util.ArrayList\ getRTN(byte)
+comment4.params=
+comment4.target=java.util.ArrayList\ getFetchRTN()
+numComments=5

@@ -1,0 +1,41 @@
+    irmovq stack, %rsp
+    call main
+    halt
+    irmovl mergeArray, %rdi # move array pointer to first argument
+    irmovl $0, %rax # %rax will contain the array size
+    call array_size # put the size of the array in %rax
+    rrmovl %rax, %rsi # move array size to second argument
+    #call merge_sort
+    ret
+    
+
+ 
+merge_sort:
+    irmovl $0, %r8
+    subl %rbp, %r8
+    je terminate
+    
+    mrmovl (%rbp), %r8
+    addl %r8, %rax
+    irmovl $8, %r8
+    addl %r8, %rbp
+    mrmovl (%rbp), %rbp
+    
+    call merge_sort
+
+terminate:
+    ret
+    
+array_size:
+    irmovl $0, %rbx
+    mrmovl (%rdi), %r8
+    subl %r8, %rbx
+    je terminate
+    irmovl $8, %rbx
+    addl %rbx, %rdi
+    irmovl $1, %rbx
+    addl %rbx, %rax
+    jmp array_size
+
+    .pos 0xf00
+stack:

@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.params=wordSize
+comment0.target=Register(int)
+comment0.text=\n\ An\ example\ of\ a\ method\ -\ replace\ this\ comment\ with\ your\ own\n\ \n\ @param\ \ y\ \ \ \ a\ sample\ parameter\ for\ a\ method\n\ @return\ \ \ \ \ \ \ \ the\ sum\ of\ x\ and\ y\ \n
+comment1.params=
+comment1.target=byte[]\ read()
+comment1.text=\n\ Access\ register\ data\ (word)\n\ \n\ @return\ data\ in\ register\n
+comment2.params=
+comment2.target=int\ readInt()
+comment2.text=\n\ Access\ register\ data\ (as\ integer)\n\ \n\ @return\ data\ in\ register\n
+comment3.params=
+comment3.target=java.lang.String\ readHex()
+comment3.text=\n\ Access\ register\ data\ (as\ hex\ string)\n\ \n\ @return\ data\ in\ register\n
+comment4.params=stream
+comment4.target=void\ writeB(byte)
+comment4.text=\n\ Write\ to\ register\ (byte\ sized\ data)\n\ \n\ @param\ \ stream\ the\ data\ to\ write\n
+comment5.params=stream
+comment5.target=void\ write(byte[])
+comment5.text=\n\ Write\ to\ register\ (word\ sized\ data)\n\ \n\ @param\ \ stream\ the\ data\ to\ write\n
+comment6.params=stream
+comment6.target=void\ writeInt(int)
+comment6.text=\n\ Write\ to\ register\ (an\ integer)\n\ \n\ @param\ \ stream\ the\ data\ to\ write\n
+comment7.params=
+comment7.target=int\ wordSize()
+numComments=8

@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.params=wordSize\ numReg\ busSize\ RTNFile
+comment0.target=Machine(int,\ int,\ int,\ java.lang.String)
+comment0.text=\n\ Constructor\ for\ objects\ of\ class\ Machine\n
+comment1.params=
+comment1.target=void\ run()
+numComments=2

@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=machine\ RTNDefinition
+comment0.target=Microcode(Machine,\ RTN)
+comment1.params=
+comment1.target=void\ fetchExec()
+comment2.params=instruction\ fetch
+comment2.target=void\ executeRTNOperations(byte[],\ boolean)
+comment3.params=operand\ instruction
+comment3.target=void\ readOperandValue(java.lang.String,\ byte[])
+comment4.params=operand\ instruction
+comment4.target=void\ writeOperandValue(java.lang.String,\ byte[])
+numComments=5

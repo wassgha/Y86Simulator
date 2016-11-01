@@ -1,0 +1,30 @@
+FETCH:
+	MA←PC
+	MD←M[MA]
+	IR←MD
+	C←PC+4
+	PC←C
+
+rrmovq:
+	R[arg2]←R[arg1]
+	
+rmmovq:
+	MA←R[arg2]
+	MD←R[arg1]
+	M[MA]←MD
+
+mrmovq:
+	MA←R[arg1]
+	MD←M[MA]
+	R[arg2]←MD
+
+irmovq:
+	R[arg2]←arg1
+
+jmp:
+	PC←arg1
+
+addq:
+	A←R[arg1]
+	C←A+R[arg2]
+	R[arg2]←C

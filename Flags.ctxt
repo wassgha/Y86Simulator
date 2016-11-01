@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Flags()
+comment1.params=z
+comment1.target=void\ setZ(boolean)
+comment2.params=s
+comment2.target=void\ setS(boolean)
+comment3.params=o
+comment3.target=void\ setO(boolean)
+comment4.params=
+comment4.target=boolean\ getZ()
+comment5.params=
+comment5.target=boolean\ getS()
+comment6.params=
+comment6.target=boolean\ getO()
+numComments=7

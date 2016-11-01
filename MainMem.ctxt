@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.params=memSize\ wordSize
+comment0.target=MainMem(int,\ int)
+comment0.text=\n\ Constructor,\ makes\ a\ new\ Main\ memory\ of\ size\ memSize\ that\ reads\ and\ writes\n\ in\ batches\ of\ size\ wordSize\n
+comment1.params=addr
+comment1.target=byte[]\ read(int)
+comment1.text=\n\ Access\ memory\ data\ through\ address\n\ \n\ @param\ \ addr\ the\ address\ of\ the\ bytes\ accessed\n\ @return\ \ data\ at\ address\ specified\n
+comment2.params=addr\ data
+comment2.target=void\ write(int,\ byte[])
+comment2.text=\n\ Write\ to\ memory\ at\ address\n\ \n\ @param\ \ addr\ the\ address\ of\ the\ bytes\ to\ write\ to\n\ @param\ \ data\ the\ data\ to\ write\n
+comment3.params=data
+comment3.target=java.lang.String\ byteToHex(byte[])
+comment3.text=\n\ Method\ byteToHex,\ converts\ a\ byte\ array\ (usually\ word\ sized)\ to\ its\n\ hex\ representation\ (as\ a\ string)\n\n\ @param\ data\ word-sized\ byte\ array\n\ @return\ hex\ representation\ of\ the\ bytes\n
+comment4.params=
+comment4.target=java.lang.String[][]\ getContentHex()
+comment4.text=\n\ Method\ getContentHex\ returns\ the\ addresses\ and\ contents\ of\ the\ memory\n\ as\ an\ array\ of\ hex\ formatted\ string\ (for\ display\ in\ the\ GUI\n\n\ @return\ hex\ representation\ of\ the\ memory\ content\n
+numComments=5
