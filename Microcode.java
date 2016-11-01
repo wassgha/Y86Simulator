@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
+import java.lang.*;
 
 /**
  * Microcode class, translates the RTN instructions for each Y86 instruction
@@ -14,11 +15,13 @@ public class Microcode
     HashMap<String, Byte> regCode;
     RTN RTNDefinition;
     Machine machine;
+    String[] allowedALUOps;
     
-    public Microcode(Machine machine, RTN RTNDefinition)
+    public Microcode(Machine machine, RTN RTNDefinition, String[] allowedALUOps)
     {
         this.RTNDefinition = RTNDefinition;
         this.machine = machine;
+        this.allowedALUOps = allowedALUOps;
     }
     
     public void fetchExec() {
@@ -46,25 +49,35 @@ public class Microcode
         
         for (Operands operation : instructionOperations) {
             if (operation.left.equals("C")) {
-                // Arithmetic Operation
-                String[] arithOperands = operation.right.split("\\+");
-                if(arithOperands[0].equals("A")) {
-                    readOperandValue(arithOperands[1], instruction);
-                    machine.alu.add();
-                } else if (arithOperands[1].equals("A")) {
-                    readOperandValue(arithOperands[0], instruction);
-                    machine.alu.add();
-                } else if (arithOperands[0].matches("[0-9]+")) {
-                    readOperandValue(arithOperands[1], instruction);
-                    machine.alu.add(Integer.parseInt(arithOperands[0]));
-                } else if (arithOperands[1].matches("[0-9]+")) {
-                    readOperandValue(arithOperands[0], instruction);
-                    machine.alu.add(Integer.parseInt(arithOperands[1]));
-                } else {
-                    System.out.println("Error parsing arithmetic operation");
+                // Operation has to be handled by the ALU
+                boolean foundOp = false;
+                for (String ALUOp : allowedALUOps) {
+                    if (operation.right.indexOf(ALUOp) != -1) {
+                        String[] arithOperands = operation.right.split("\\" + ALUOp);
+                        if(arithOperands[0].equals("A")) {
+                            readOperandValueToBus(arithOperands[1], instruction);
+                            performALUOp(ALUOp, null);
+                        } else if (arithOperands[1].equals("A")) {
+                            readOperandValueToBus(arithOperands[0], instruction);
+                            performALUOp(ALUOp, null);
+                        } else if (arithOperands[0].matches("[0-9]+")) {
+                            readOperandValueToBus(arithOperands[1], instruction);
+                            performALUOp(ALUOp, Integer.parseInt(arithOperands[0]));
+                        } else if (arithOperands[1].matches("[0-9]+")) {
+                            readOperandValueToBus(arithOperands[0], instruction);
+                            performALUOp(ALUOp, Integer.parseInt(arithOperands[1]));
+                        } else {
+                            System.out.println("Error parsing arithmetic operation");
+                            return;
+                        }
+                        foundOp = true;
+                    }
+                }
+                if (!foundOp) {
+                    System.out.println("Unauthorized arithmetic operation (" + operation.right + "). Allowed operations are : " + Arrays.toString(allowedALUOps));
                     return;
                 }
-            } else if (operation.right.equals("M[MA]")) {
+           } else if (operation.right.equals("M[MA]")) {
                 // A memory read operation, doesn't go through the bus
                 // Directly write to MD
                 machine.md.write(machine.mainMem.read(machine.ma.readInt()));
@@ -73,7 +86,7 @@ public class Microcode
                 machine.mainMem.write(machine.ma.readInt(), machine.md.read());
            } else {
                 // Transfer Operation
-                readOperandValue(operation.right, instruction);
+                readOperandValueToBus(operation.right, instruction);
                 writeOperandValue(operation.left, instruction);
             }
             // byte[] value = readOperandValue(operation.right, instruction);
@@ -81,7 +94,39 @@ public class Microcode
         }       
     }
     
-    public void readOperandValue(String operand, byte[] instruction) {
+    public void performALUOp(String ALUOp, Integer immediateVal) {
+        switch(ALUOp) {
+            case "+":
+                if (immediateVal==null)
+                    machine.alu.add();
+                else
+                    machine.alu.add(immediateVal);
+                break;
+            case "-":
+                if (immediateVal==null)
+                    machine.alu.sub();
+                else
+                    machine.alu.sub(immediateVal);
+                break;
+            case "*":
+                machine.alu.multiply();
+                break;
+            case "&":
+                machine.alu.and();
+                break;
+            case "^":
+                machine.alu.xor();
+                break;
+            case "|":
+                machine.alu.or();
+                break;
+            default :
+                System.out.println("Unsupported ALU instruction (" + ALUOp + ")");
+                break;
+        }
+    }
+    
+    public void readOperandValueToBus(String operand, byte[] instruction) {
         int instruction_code_1 = 0, instruction_code_2 = 0, instruction_arg_1 = 0, instruction_arg_2 = 0;
         if (instruction != null) {
             // Instruction Specifiers (First Byte)

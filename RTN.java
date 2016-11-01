@@ -19,6 +19,10 @@ public class RTN
     // (stored as a list of left and right operands)
     HashMap<Byte, ArrayList<Operands>> instructionList;
     
+    // A HashMap containing the condition necessary for each RTN instruction to
+    // be executed (if a condition exists)
+    HashMap<Byte, String> conditionList;
+    
     // A special list of assignments that define the FETCH operation
     ArrayList<Operands> fetchInstructionList;
     
@@ -31,6 +35,7 @@ public class RTN
     public void y86Init() {
             // Initialize the instruction list
             instructionList = new HashMap<Byte, ArrayList<Operands>>();
+            conditionList = new HashMap<Byte, String>();
             
             // Fill Operation Code Table
             opCode = new HashMap<String, Byte>();
@@ -123,6 +128,7 @@ public class RTN
             // Variables to store the instruction currently being fetched
             String curInstructionName = "";
             ArrayList<Operands> curInstruction = new ArrayList<Operands>();
+            String curInstructionCond = null;
             
             // Begin Scanner
             while(input.hasNext()) {
@@ -133,11 +139,16 @@ public class RTN
                 // declaration (in the form "instruction_name:")
                 Pattern inst_name_pattern = Pattern.compile("([A-Za-z][A-Za-z0-9_]*):");
                 Matcher inst_name_m = inst_name_pattern.matcher(nextLine);
+
+                // Regex Matching for the condition necessary to execute
+                // the instruction (in the form "(condition)→instruction"
+                // declaration (in the form "instruction_name:")
+                Pattern inst_cond_pattern = Pattern.compile("\\((.*)\\)→(.*)");
                 
                 // Regex Matching for sub-instructions of the current
                 // RTN instruction being fetched
-                Pattern inst_pattern = Pattern.compile("\t(.*)←(.*)");
-                Matcher inst_m = inst_pattern.matcher(nextLine);
+                Pattern inst_pattern = Pattern.compile("\t*(.*)←(.*)");
+                Matcher instruction_match = inst_pattern.matcher(nextLine);
                 
                 // Each line could be the start of a new ISA (Y86) instruction
                 // or an RTN instruction belonging to an ISA (Y86) instruction
@@ -147,20 +158,33 @@ public class RTN
                     if (!instructionList.isEmpty() || !curInstruction.isEmpty())
                         if(curInstructionName.equals("FETCH"))
                             fetchInstructionList = curInstruction;
-                        else
+                        else {
                             instructionList.put(opCode.get(curInstructionName), curInstruction);
+                        }
                         
                     // Get the ISA (Y86) instruction name and re-initialize the current RTN instruction array
                     curInstructionName = inst_name_m.group(1).trim();
                     curInstruction = new ArrayList<Operands>();
                     System.out.println();
                     System.out.println("INSTRUCTION : " + curInstructionName + " CODE : " + String.format("0x%08X", opCode.get(curInstructionName)));                    
-                } else if (inst_m.find()) {
+                } else if (instruction_match.find()) {
                     // An RTN instruction is always an assignment in the form :  variable←expression
-                    String variable = inst_m.group(1).trim();
-                    String expression = inst_m.group(2).trim();
-                    curInstruction.add(new Operands(variable, expression));
-                    System.out.println("OPERAND1 : " + variable + ", OPERAND2 : " + expression);
+                    
+                    String left_hand = instruction_match.group(1).trim();
+                    String right_hand = instruction_match.group(2).trim();
+                    
+                    // Check whether the left hand side has a condition embedded into it
+                    Matcher inst_cond_m = inst_cond_pattern.matcher(left_hand);
+                    if (inst_cond_m.matches()) {
+                        conditionList.put(opCode.get(curInstructionName), 
+                        inst_cond_m.group(1).trim());
+                        left_hand = inst_cond_m.group(2).trim();
+                        System.out.println("CONDITION " + inst_cond_m.group(1).trim());
+                    }
+                    
+                    // Add the operands to the list of instructions
+                    curInstruction.add(new Operands(left_hand, right_hand));
+                    System.out.println("OPERAND1 : " + left_hand + ", OPERAND2 : " + right_hand);
                 }
             }
             

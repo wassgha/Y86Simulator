@@ -23,6 +23,7 @@ public class Simulation extends JFrame implements ActionListener
 
     private int numReg, wordSize;              // Counter's value
     private String rtnFile;
+    private String[] allowedALUOps;
     
     private Machine machine; // Make a new CPU
     
@@ -43,9 +44,10 @@ public class Simulation extends JFrame implements ActionListener
         wordSize = 4; // 4 * 8 bits = 32 bit word size
         numReg = 6; // number of general registers
         rtnFile = "rtn.txt";
+        allowedALUOps = new String[] {"+", "-", "*", "&"};
         
         // Create a machine simulator 
-        machine = new Machine(wordSize, numReg, wordSize, rtnFile);
+        machine = new Machine(wordSize, numReg, wordSize, allowedALUOps, rtnFile);
         
         // Length of field that displays the content of registers
         // Each register is a quad word (4 * wordSize) and each 4
@@ -220,7 +222,7 @@ public class Simulation extends JFrame implements ActionListener
         } else if(evt.getActionCommand().equals("Reset")) {
             
             // Reset removes the old machine and makes a new one
-            machine = new Machine(wordSize, numReg, wordSize, rtnFile);
+            machine = new Machine(wordSize, numReg, wordSize, allowedALUOps, rtnFile);
             
         } else if (evt.getActionCommand().equals("Run")) {
             

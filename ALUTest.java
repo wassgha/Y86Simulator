@@ -80,6 +80,20 @@ public class ALUTest
     }
     
     @Test
+    public void testAddAandBusBig()
+    {
+        Register a = new Register(4);
+        Register c = new Register(4);
+        Bus bus = new Bus(4);
+        Flags flags = new Flags();
+        ALU aLU1 = new ALU(a, c, bus, flags);
+        a.writeInt(3002010);
+        bus.writeInt(102);
+        aLU1.add();
+        assertEquals(3002112, c.readInt());
+    }
+    
+    @Test
     public void testIncrementA()
     {
         Register a = new Register(4);
@@ -87,9 +101,12 @@ public class ALUTest
         Bus bus = new Bus(4);
         Flags flags = new Flags();
         ALU aLU1 = new ALU(a, c, bus, flags);
-        a.writeInt(5);
+        bus.writeInt(5);
         aLU1.add(6);
         assertEquals(11, c.readInt());
     }
+
+    // Flags tested in FlagTest
+    
 }
 

@@ -24,7 +24,37 @@ irmovq:
 jmp:
 	PC←arg1
 
+je:
+	(ZF)→PC←arg1
+
+jge:
+	(~(SF^OF))→PC←arg1
+
+jl:
+	(SF^OF)→PC←arg1
+
+jg:
+	(~(SF|ZF))→PC←arg1
+
+jne:
+	(~ZF)→PC←arg1
+
 addq:
 	A←R[arg1]
 	C←A+R[arg2]
+	R[arg2]←C
+
+subq:
+	A←R[arg1]
+	C←A-R[arg2]
+	R[arg2]←C
+
+andq:
+	A←R[arg1]
+	C←A&R[arg2]
+	R[arg2]←C
+
+xorq:
+	A←R[arg1]
+	C←A^R[arg2]
 	R[arg2]←C

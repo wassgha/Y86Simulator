@@ -16,20 +16,22 @@ public class Machine
     public Flags flags;
     public RTN RTNDefinition;
     public Microcode microcode;
+    public String[] allowedALUOps;
 
     /**
      * Constructor for objects of class Machine
      */
-    public Machine(int wordSize, int numReg, int busSize, String RTNFile)
+    public Machine(int wordSize, int numReg, int busSize, String[] allowedALUOps, String RTNFile)
     {   
         this.wordSize = wordSize;
         // Maximum addressable space is 2^(wordSize - 1)
         this.memSize = (int) Math.pow(2, 7);
         this.numReg = numReg;
         this.busSize = busSize;
+        this.allowedALUOps = allowedALUOps;
         
         this.RTNDefinition = new RTN(RTNFile);
-        this.microcode = new Microcode(this, RTNDefinition);
+        this.microcode = new Microcode(this, RTNDefinition, allowedALUOps);
         
         this.register = new Register[numReg];
         for (int i = 0; i<numReg; i++){

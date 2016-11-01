@@ -1,12 +1,14 @@
 #BlueJ class context
-comment0.params=machine\ RTNDefinition
-comment0.target=Microcode(Machine,\ RTN)
+comment0.params=machine\ RTNDefinition\ allowedALUOps
+comment0.target=Microcode(Machine,\ RTN,\ java.lang.String[])
 comment1.params=
 comment1.target=void\ fetchExec()
 comment2.params=instruction\ fetch
 comment2.target=void\ executeRTNOperations(byte[],\ boolean)
-comment3.params=operand\ instruction
-comment3.target=void\ readOperandValue(java.lang.String,\ byte[])
+comment3.params=ALUOp\ immediateVal
+comment3.target=void\ performALUOp(java.lang.String,\ java.lang.Integer)
 comment4.params=operand\ instruction
-comment4.target=void\ writeOperandValue(java.lang.String,\ byte[])
-numComments=5
+comment4.target=void\ readOperandValueToBus(java.lang.String,\ byte[])
+comment5.params=operand\ instruction
+comment5.target=void\ writeOperandValue(java.lang.String,\ byte[])
+numComments=6
