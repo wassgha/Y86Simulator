@@ -36,7 +36,6 @@ The current demo program is a primitive while loop that increments a counter and
         machine.mainMem.write(20, new byte[]{0x40, 0x34, 0x00, 0x00});
         // jmp 0x0C
         machine.mainMem.write(24, new byte[]{0x70, 0x0, 0x0, 0xC});
-
     }
 ```
 
