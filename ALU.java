@@ -7,6 +7,7 @@ public class ALU
     Bus bus;
     Register a, c;
     int wordSize;
+    int maxImmediate;
     Flags flags;
     
     /**
@@ -17,29 +18,28 @@ public class ALU
      * @param bus Bus data (second input)
      * @param flags Current processor flags, used to set Zero/Sign
      */
-    public ALU(Register a, Register c, Bus bus, Flags flags)
+    public ALU(Register a, Register c, Bus bus, Flags flags, int maxImmediate)
     {
         this.a = a;
         this.c = c;
         this.bus = bus;
         this.flags = flags;
         this.wordSize = a.wordSize();
+        this.maxImmediate = maxImmediate;
     }
     
     public void add() {
         int aData = a.readInt();
         int busData = bus.readInt();
         int result = aData + busData;
-        flags.setZ(result==0);
-        flags.setS(result<0);
+        setFlags(result);
         c.writeInt(result);
     }
 
     public void add(int val) {
         int busData = bus.readInt();
         int result = val + busData;
-        flags.setZ(result==0);
-        flags.setS(result<0);
+        setFlags(result);
         c.writeInt(result);
     }
 
@@ -47,16 +47,14 @@ public class ALU
         int aData = a.readInt();
         int busData = bus.readInt();
         int result = aData - busData;
-        flags.setZ(result==0);
-        flags.setS(result<0);
+        setFlags(result);
         c.writeInt(result);
     }
 
     public void sub(int val) {
         int busData = bus.readInt();
         int result = busData - val;
-        flags.setZ(result==0);
-        flags.setS(result<0);
+        setFlags(result);
         c.writeInt(result);
     }
 
@@ -64,8 +62,7 @@ public class ALU
         int aData = a.readInt();
         int busData = bus.readInt();
         int result = aData * busData;
-        flags.setZ(result==0);
-        flags.setS(result<0);
+        setFlags(result);
         c.writeInt(result);
     }
 
@@ -73,8 +70,7 @@ public class ALU
         int aData = a.readInt();
         int busData = bus.readInt();
         int result = aData & busData;
-        flags.setZ(result==0);
-        flags.setS(result<0);
+        setFlags(result);
         c.writeInt(result);
     }
 
@@ -82,8 +78,7 @@ public class ALU
         int aData = a.readInt();
         int busData = bus.readInt();
         int result = aData | busData;
-        flags.setZ(result==0);
-        flags.setS(result<0);
+        setFlags(result);
         c.writeInt(result);
     }
 
@@ -91,9 +86,14 @@ public class ALU
         int aData = a.readInt();
         int busData = bus.readInt();
         int result = aData ^ busData;
+        setFlags(result);
+        c.writeInt(result);
+    }
+    
+    private void setFlags(int result) {
+        flags.setO(result>maxImmediate || result<(-maxImmediate));
         flags.setZ(result==0);
         flags.setS(result<0);
-        c.writeInt(result);
     }
 
 }

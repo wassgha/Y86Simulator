@@ -47,7 +47,7 @@ public class FlagsTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(-5);
         bus.writeInt(5);
         aLU1.add();
@@ -61,7 +61,7 @@ public class FlagsTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(5);
         bus.writeInt(5);
         aLU1.sub();
@@ -75,7 +75,7 @@ public class FlagsTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(5);
         bus.writeInt(4);
         aLU1.add();
@@ -89,7 +89,7 @@ public class FlagsTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(5);
         bus.writeInt(4);
         aLU1.sub();
@@ -103,7 +103,7 @@ public class FlagsTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(5);
         bus.writeInt(4);
         aLU1.add();
@@ -117,7 +117,7 @@ public class FlagsTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(5);
         bus.writeInt(4);
         aLU1.sub();
@@ -131,7 +131,7 @@ public class FlagsTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(-5);
         bus.writeInt(4);
         aLU1.add();
@@ -145,7 +145,7 @@ public class FlagsTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(2);
         bus.writeInt(4);
         aLU1.sub();

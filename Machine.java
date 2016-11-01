@@ -9,7 +9,7 @@ public class Machine
 {
     public MainMem mainMem;
     public Register[] register;
-    public int wordSize, numReg, busSize, memSize;
+    public int wordSize, numReg, busSize, memSize, maxImmediate, maxAddress;
     public Register pc, ir, md, ma, a, c;
     public ALU alu;
     public Bus bus;
@@ -25,6 +25,8 @@ public class Machine
     {   
         this.wordSize = wordSize;
         // Maximum addressable space is 2^(wordSize - 1)
+        this.maxAddress = (int) Math.pow(2, 8 * (wordSize - 1));
+        this.maxImmediate = (int) Math.pow(2, 8 * (wordSize - 2));
         this.memSize = (int) Math.pow(2, 7);
         this.numReg = numReg;
         this.busSize = busSize;
@@ -51,7 +53,7 @@ public class Machine
         
         this.bus = new Bus(busSize);
         
-        this.alu = new ALU(a, c, bus, flags);
+        this.alu = new ALU(a, c, bus, flags, maxImmediate);
     }
     
     public void run() {

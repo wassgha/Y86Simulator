@@ -47,7 +47,7 @@ public class ALUTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         aLU1.add();
         assertEquals(0, c.readInt());
     }
@@ -59,7 +59,7 @@ public class ALUTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         bus.writeInt(5);
         aLU1.add();
         assertEquals(5, c.readInt());
@@ -72,7 +72,7 @@ public class ALUTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(2);
         bus.writeInt(5);
         aLU1.add();
@@ -86,7 +86,7 @@ public class ALUTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(3002010);
         bus.writeInt(102);
         aLU1.add();
@@ -100,7 +100,7 @@ public class ALUTest
         Register c = new Register(4);
         Bus bus = new Bus(4);
         Flags flags = new Flags();
-        ALU aLU1 = new ALU(a, c, bus, flags);
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         bus.writeInt(5);
         aLU1.add(6);
         assertEquals(11, c.readInt());

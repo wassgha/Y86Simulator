@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=a\ c\ bus\ flags
-comment0.target=ALU(Register,\ Register,\ Bus,\ Flags)
+comment0.params=a\ c\ bus\ flags\ maxImmediate
+comment0.target=ALU(Register,\ Register,\ Bus,\ Flags,\ int)
 comment0.text=\n\ ALU\ Constructor\n\n\ @param\ a\ Register\ a\ (first\ input)\n\ @param\ c\ Register\ c\ (result)\n\ @param\ bus\ Bus\ data\ (second\ input)\n\ @param\ flags\ Current\ processor\ flags,\ used\ to\ set\ Zero/Sign\n
 comment1.params=
 comment1.target=void\ add()
@@ -18,4 +18,6 @@ comment7.params=
 comment7.target=void\ or()
 comment8.params=
 comment8.target=void\ xor()
-numComments=9
+comment9.params=result
+comment9.target=void\ setFlags(int)
+numComments=10

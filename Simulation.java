@@ -319,7 +319,7 @@ public class Simulation extends JFrame implements ActionListener
     public void writeDemoProgram() {
         // pos 0
         // irmovq 0x666, %r1
-        machine.mainMem.write(0, new byte[]{0x30, 0x01, 0x00, 0x01});
+        machine.mainMem.write(0, new byte[]{0x30, 0x01, (byte) 0xFF, (byte) 0xFF});
         // rrmovq %r1, %r3
         machine.mainMem.write(4, new byte[]{0x20, 0x13, 0x00, 0x00});
         // addq %r1, %r3
