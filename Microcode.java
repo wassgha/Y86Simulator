@@ -29,7 +29,7 @@ public class Microcode
     
     public void executeRTNOperations(byte[] instruction, boolean fetch) {
         // If instruction is halt then terminate
-        if(instruction[0] == 0x0){
+        if(!fetch && instruction[0] == 0x0){
             machine.flags.setStatus("HLT");
             return;
         }
