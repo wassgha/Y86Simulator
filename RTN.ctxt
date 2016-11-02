@@ -10,4 +10,6 @@ comment3.params=instruction
 comment3.target=java.util.ArrayList\ getRTN(byte)
 comment4.params=
 comment4.target=java.util.ArrayList\ getFetchRTN()
-numComments=5
+comment5.params=instruction
+comment5.target=java.lang.String\ getCondition(byte)
+numComments=6

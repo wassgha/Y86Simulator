@@ -205,4 +205,8 @@ public class RTN
     public ArrayList<Operands> getFetchRTN() {
         return fetchInstructionList;
     }
+
+    public String getCondition(byte instruction) {
+        return conditionList.get(instruction);
+    }
 }

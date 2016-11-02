@@ -36,24 +36,62 @@ public class Microcode
         
         // else get RTN for instruction and execute it
         ArrayList<Operands> instructionOperations;
+        String condition = null;
+        boolean conditionSatisfied = true;
 
         // Get the list of RTN operations necessary to execute the Y86 instruction
         if (fetch)
             // if this is a fetch operation then get the RTN definition for the fetch operation
             instructionOperations = machine.RTNDefinition.getFetchRTN();
-        else
+        else {
             // else get RTN operations for the instruction based on the first byte (instruction code)
             instructionOperations = machine.RTNDefinition.getRTN(instruction[0]);
+            // get condition necessary to run the instruction if it exists
+            condition = machine.RTNDefinition.getCondition(instruction[0]);
+        }
             
         if (instructionOperations == null) {
+            machine.flags.setStatus("INS");
             System.out.println("Could not resolve RTN definition for instruction " + String.format("0x%08X", instruction[0]));
             return;
         }
+        
+        // If the instruction has a condition necessary for it to run
+        
+        if (condition != null) {
+            conditionSatisfied = false;
+            switch (condition) {
+                case "ZF":
+                    conditionSatisfied=machine.flags.getZ();
+                    break;
+                case "~(SF^OF)":
+                    conditionSatisfied=!(machine.flags.getS() ^ machine.flags.getO());
+                    break;
+                case "SF^OF":
+                    conditionSatisfied=(machine.flags.getS() || machine.flags.getO());
+                    break;
+                case "~(SF|ZF)":
+                    conditionSatisfied=!(machine.flags.getS() || machine.flags.getZ());
+                    break;
+                case "~ZF":
+                    conditionSatisfied=!(machine.flags.getZ());
+                    break;
+                default:
+                    machine.flags.setStatus("INS");
+                    System.out.println("Unsupported condition");
+                    break;
+            }
+        }
+        
+        if(!conditionSatisfied)
+            return;
         
         for (Operands operation : instructionOperations) {
             if (operation.left.equals("C")) {
                 // Operation has to be handled by the ALU
                 boolean foundOp = false;
+                // Look through the allowed operations and try to match
+                // one of them inside the arithmetic expression
                 for (String ALUOp : machine.allowedALUOps) {
                     if (operation.right.indexOf(ALUOp) != -1) {
                         String[] arithOperands = operation.right.split("\\" + ALUOp);
@@ -70,6 +108,7 @@ public class Microcode
                             readOperandValueToBus(arithOperands[0], instruction);
                             performALUOp(ALUOp, Integer.parseInt(arithOperands[1]));
                         } else {
+                            machine.flags.setStatus("INS");
                             System.out.println("Error parsing arithmetic operation");
                             return;
                         }
@@ -77,6 +116,7 @@ public class Microcode
                     }
                 }
                 if (!foundOp) {
+                    machine.flags.setStatus("INS");
                     System.out.println("Unauthorized arithmetic operation (" + operation.right + "). Allowed operations are : " + Arrays.toString(machine.allowedALUOps));
                     return;
                 }

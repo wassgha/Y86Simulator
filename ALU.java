@@ -90,7 +90,15 @@ public class ALU
         c.writeInt(result);
     }
     
+    public void not() {
+        int busData = bus.readInt();
+        int result = ~busData;
+        setFlags(result);
+        c.writeInt(result);
+    }
+    
     private void setFlags(int result) {
+        System.out.println("RESULT: " + result + "MAX : " + maxImmediate);
         flags.setO(result>maxImmediate || result<(-maxImmediate));
         flags.setZ(result==0);
         flags.setS(result<0);
