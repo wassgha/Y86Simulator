@@ -59,7 +59,6 @@ public class Microcode
         // If the instruction has a condition necessary for it to run
         
         if (condition != null) {
-            System.out.println("Condition detected " + condition + " S = " + machine.flags.getS() + " O = " + machine.flags.getO());
             conditionSatisfied = false;
             switch (condition) {
                 case "ZF":
@@ -67,7 +66,6 @@ public class Microcode
                     break;
                 case "SF=OF":
                     conditionSatisfied=machine.flags.getS() == machine.flags.getO();
-                    System.out.println("Condition statisfied?" + conditionSatisfied);
                     break;
                 case "SF<>OF":
                     conditionSatisfied=machine.flags.getS() != machine.flags.getO();
