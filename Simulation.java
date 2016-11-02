@@ -223,6 +223,11 @@ public class Simulation extends JFrame implements ActionListener
             
             // Reset removes the old machine and makes a new one
             machine = new Machine(wordSize, numReg, wordSize, allowedALUOps, rtnFile);
+            if (isRunning) {
+                timer.cancel();
+                timer.purge();
+                isRunning = false;
+            }
             
         } else if (evt.getActionCommand().equals("Run")) {
             
@@ -328,8 +333,14 @@ public class Simulation extends JFrame implements ActionListener
         machine.mainMem.write(12, new byte[]{0x30, 0x04, 0x00, (byte) 0x7C});
         // rmmovq %r3, (%r4)
         machine.mainMem.write(16, new byte[]{0x40, 0x34, 0x00, 0x00});
-        // jmp 0x0C
-        machine.mainMem.write(20, new byte[]{0x70, 0x0, 0x0, 0x08});
+        // irmovq 0xA, %r5
+        machine.mainMem.write(20, new byte[]{0x30, 0x05, 0x00, (byte) 0x0A});
+        // subq %r3, %r5
+        machine.mainMem.write(24, new byte[]{0x61, 0x35, 0x00, 0x00});
+        // jge 0x2A
+        machine.mainMem.write(28, new byte[]{0x75, 0x00, 0x00, 0x2A});
+        // jmp 0x08
+        machine.mainMem.write(32, new byte[]{0x70, 0x00, 0x00, 0x08});
 
     }
 
