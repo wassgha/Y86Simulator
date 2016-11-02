@@ -28,77 +28,81 @@ public class ALU
         this.maxImmediate = maxImmediate;
     }
     
-    public void add() {
+    public void add(boolean fetch) {
         int aData = a.readInt();
         int busData = bus.readInt();
         int result = aData + busData;
-        setFlags(result);
+        setFlags(result, fetch);
         c.writeInt(result);
     }
 
-    public void add(int val) {
+    public void add(int val, boolean fetch) {
         int busData = bus.readInt();
         int result = val + busData;
-        setFlags(result);
+        setFlags(result, fetch);
         c.writeInt(result);
     }
 
-    public void sub() {
+    public void sub(boolean fetch) {
         int aData = a.readInt();
         int busData = bus.readInt();
         int result = aData - busData;
-        setFlags(result);
+        setFlags(result, fetch);
         c.writeInt(result);
     }
 
-    public void sub(int val) {
+    public void sub(int val, boolean fetch) {
         int busData = bus.readInt();
         int result = busData - val;
-        setFlags(result);
+        setFlags(result, fetch);
         c.writeInt(result);
     }
 
-    public void multiply() {
+    public void multiply(boolean fetch) {
         int aData = a.readInt();
         int busData = bus.readInt();
         int result = aData * busData;
-        setFlags(result);
+        setFlags(result, fetch);
         c.writeInt(result);
     }
 
-    public void and() {
+    public void and(boolean fetch) {
         int aData = a.readInt();
         int busData = bus.readInt();
         int result = aData & busData;
-        setFlags(result);
+        setFlags(result, fetch);
         c.writeInt(result);
     }
 
-    public void or() {
+    public void or(boolean fetch) {
         int aData = a.readInt();
         int busData = bus.readInt();
         int result = aData | busData;
-        setFlags(result);
+        setFlags(result, fetch);
         c.writeInt(result);
     }
 
-    public void xor() {
+    public void xor(boolean fetch) {
         int aData = a.readInt();
         int busData = bus.readInt();
         int result = aData ^ busData;
-        setFlags(result);
+        setFlags(result, fetch);
         c.writeInt(result);
     }
     
-    public void not() {
+    public void not(boolean fetch) {
         int busData = bus.readInt();
         int result = ~busData;
-        setFlags(result);
+        setFlags(result, fetch);
         c.writeInt(result);
     }
     
-    private void setFlags(int result) {
-        System.out.println("RESULT: " + result + "MAX : " + maxImmediate);
+    private void setFlags(int result, boolean fetch) {
+        // if this is a fetch operation then don't set flags
+        //(to preserve flags from last operation)
+        if (fetch) return;
+        
+        // else set flags
         flags.setO(result>maxImmediate || result<(-maxImmediate));
         flags.setZ(result==0);
         flags.setS(result<0);

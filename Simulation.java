@@ -338,7 +338,7 @@ public class Simulation extends JFrame implements ActionListener
         // subq %r3, %r5
         machine.mainMem.write(24, new byte[]{0x61, 0x35, 0x00, 0x00});
         // jge 0x2A
-        machine.mainMem.write(28, new byte[]{0x75, 0x00, 0x00, 0x2A});
+        machine.mainMem.write(28, new byte[]{0x75, 0x00, 0x00, 0x28});
         // jmp 0x08
         machine.mainMem.write(32, new byte[]{0x70, 0x00, 0x00, 0x08});
 

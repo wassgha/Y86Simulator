@@ -50,7 +50,7 @@ public class FlagsTest
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(-5);
         bus.writeInt(5);
-        aLU1.add();
+        aLU1.add(false);
         assertTrue(flags.getZ());
     }
 
@@ -64,7 +64,7 @@ public class FlagsTest
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(5);
         bus.writeInt(5);
-        aLU1.sub();
+        aLU1.sub(false);
         assertTrue(flags.getZ());
     }
 
@@ -78,7 +78,7 @@ public class FlagsTest
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(5);
         bus.writeInt(4);
-        aLU1.add();
+        aLU1.add(false);
         assertFalse(flags.getZ());
     }
 
@@ -92,7 +92,7 @@ public class FlagsTest
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(5);
         bus.writeInt(4);
-        aLU1.sub();
+        aLU1.sub(false);
         assertFalse(flags.getZ());
     }
 
@@ -106,7 +106,7 @@ public class FlagsTest
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(5);
         bus.writeInt(4);
-        aLU1.add();
+        aLU1.add(false);
         assertFalse(flags.getS());
     }
 
@@ -120,7 +120,7 @@ public class FlagsTest
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(5);
         bus.writeInt(4);
-        aLU1.sub();
+        aLU1.sub(false);
         assertFalse(flags.getS());
     }
 
@@ -134,7 +134,7 @@ public class FlagsTest
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(-5);
         bus.writeInt(4);
-        aLU1.add();
+        aLU1.add(false);
         assertTrue(flags.getS());
     }
 
@@ -148,7 +148,7 @@ public class FlagsTest
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(2);
         bus.writeInt(4);
-        aLU1.sub();
+        aLU1.sub(false);
         assertTrue(flags.getS());
     }
 }

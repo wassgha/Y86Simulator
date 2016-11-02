@@ -59,19 +59,21 @@ public class Microcode
         // If the instruction has a condition necessary for it to run
         
         if (condition != null) {
+            System.out.println("Condition detected " + condition + " S = " + machine.flags.getS() + " O = " + machine.flags.getO());
             conditionSatisfied = false;
             switch (condition) {
                 case "ZF":
                     conditionSatisfied=machine.flags.getZ();
                     break;
-                case "~(SF^OF)":
-                    conditionSatisfied=!(machine.flags.getS() ^ machine.flags.getO());
+                case "SF=OF":
+                    conditionSatisfied=machine.flags.getS() == machine.flags.getO();
+                    System.out.println("Condition statisfied?" + conditionSatisfied);
                     break;
-                case "SF^OF":
-                    conditionSatisfied=(machine.flags.getS() || machine.flags.getO());
+                case "SF<>OF":
+                    conditionSatisfied=machine.flags.getS() != machine.flags.getO();
                     break;
-                case "~(SF|ZF)":
-                    conditionSatisfied=!(machine.flags.getS() || machine.flags.getZ());
+                case "(~ZF)&(SF=OF)":
+                    conditionSatisfied=(!machine.flags.getZ()) && (machine.flags.getS() == machine.flags.getO());
                     break;
                 case "~ZF":
                     conditionSatisfied=!(machine.flags.getZ());
@@ -97,16 +99,16 @@ public class Microcode
                         String[] arithOperands = operation.right.split("\\" + ALUOp);
                         if(arithOperands[0].equals("A")) {
                             readOperandValueToBus(arithOperands[1], instruction);
-                            performALUOp(ALUOp, null);
+                            performALUOp(ALUOp, null, fetch);
                         } else if (arithOperands[1].equals("A")) {
                             readOperandValueToBus(arithOperands[0], instruction);
-                            performALUOp(ALUOp, null);
+                            performALUOp(ALUOp, null, fetch);
                         } else if (arithOperands[0].matches("[0-9]+")) {
                             readOperandValueToBus(arithOperands[1], instruction);
-                            performALUOp(ALUOp, Integer.parseInt(arithOperands[0]));
+                            performALUOp(ALUOp, Integer.parseInt(arithOperands[0]), fetch);
                         } else if (arithOperands[1].matches("[0-9]+")) {
                             readOperandValueToBus(arithOperands[0], instruction);
-                            performALUOp(ALUOp, Integer.parseInt(arithOperands[1]));
+                            performALUOp(ALUOp, Integer.parseInt(arithOperands[1]), fetch);
                         } else {
                             machine.flags.setStatus("INS");
                             System.out.println("Error parsing arithmetic operation");
@@ -137,31 +139,31 @@ public class Microcode
         }       
     }
     
-    public void performALUOp(String ALUOp, Integer immediateVal) {
+    public void performALUOp(String ALUOp, Integer immediateVal, boolean fetch) {
         switch(ALUOp) {
             case "+":
                 if (immediateVal==null)
-                    machine.alu.add();
+                    machine.alu.add(fetch);
                 else
-                    machine.alu.add(immediateVal);
+                    machine.alu.add(immediateVal,fetch);
                 break;
             case "-":
                 if (immediateVal==null)
-                    machine.alu.sub();
+                    machine.alu.sub(fetch);
                 else
-                    machine.alu.sub(immediateVal);
+                    machine.alu.sub(immediateVal,fetch);
                 break;
             case "*":
-                machine.alu.multiply();
+                machine.alu.multiply(fetch);
                 break;
             case "&":
-                machine.alu.and();
+                machine.alu.and(fetch);
                 break;
             case "^":
-                machine.alu.xor();
+                machine.alu.xor(fetch);
                 break;
             case "|":
-                machine.alu.or();
+                machine.alu.or(fetch);
                 break;
             default :
                 machine.flags.setStatus("INS");
