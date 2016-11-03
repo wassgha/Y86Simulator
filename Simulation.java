@@ -13,7 +13,7 @@ import java.util.*;
 public class Simulation extends JFrame implements ActionListener
 {
     // instance variables - replace the example below with your own
-    private JTextField pc_val, ir_val, md_val, ma_val, a_val, c_val, z_val, o_val, s_val, status_val;  // Declare a TextField component 
+    private JTextField pc_val, ir_val, md_val, ma_val, rsp_val, rbp_val, a_val, c_val, z_val, o_val, s_val, status_val;  // Declare a TextField component 
     private JTextField register_vals[];
     private Button    load_button, run_button, stop_button, step_button, reset_button, exit_button;     // Declare a Button component
 
@@ -42,7 +42,7 @@ public class Simulation extends JFrame implements ActionListener
     {
         
         wordSize = 4; // 4 * 8 bits = 32 bit word size
-        numReg = 6; // number of general registers
+        numReg = 2 + 6; // number of general registers
         rtnFile = "rtn.txt";
         allowedALUOps = new String[] {"+", "-", "*", "&"};
         
@@ -155,12 +155,12 @@ public class Simulation extends JFrame implements ActionListener
         c_val = new JTextField(machine.c.readHex(), SwingConstants.LEFT);
         c_val.setEditable(false);
         p3.add(c_val);
-
+        
         JPanel p4 = new JPanel();
         p4.setLayout(new GridLayout(numReg/2,2, 10, 10));
         
         for (int i = 0; i<numReg; i++) {
-            p4.add(new JLabel("%r" + i + " : ", SwingConstants.CENTER));
+            p4.add(new JLabel("%r" + (i<=1?(i==0?"sp":"bp"):i) + " : ", SwingConstants.CENTER));
             register_vals[i] = new JTextField(machine.register[i].readHex(), SwingConstants.LEFT);
             register_vals[i].setEditable(false);
             p4.add(register_vals[i]);
@@ -168,7 +168,7 @@ public class Simulation extends JFrame implements ActionListener
         
 
         setTitle("Y86 Machine Simulator (Wassim Gharbi)");  // "super" Frame sets its title
-        setSize(650, 600);             // "super" Frame sets its initial window size
+        setSize(650, 500+50*(numReg/2));             // "super" Frame sets its initial window size
         //setResizable(false);
         
         // Add Simulation Control Pane
@@ -290,6 +290,7 @@ public class Simulation extends JFrame implements ActionListener
         mainMemWindow.add(js);
         mainMemWindow.repaint();
         mainMemWindow.setVisible(true);
+        mainMemWindow.setResizable(true);
     }
     
     /**
@@ -323,25 +324,34 @@ public class Simulation extends JFrame implements ActionListener
     
     public void writeDemoProgram() {
         // pos 0
-        // irmovq 0x666, %r1
-        machine.mainMem.write(0, new byte[]{0x30, 0x01, (byte) 0x00, (byte) 0x01});
-        // rrmovq %r1, %r3
-        machine.mainMem.write(4, new byte[]{0x20, 0x13, 0x00, 0x00});
-        // addq %r1, %r3
-        machine.mainMem.write(8, new byte[]{0x60, 0x13, 0x00, 0x00});
+        // irmovq 0xCC, %rbp
+        machine.mainMem.write(0, new byte[]{0x30, 0x01, 0x00, (byte) 0xCC});
+        // rrmovq %rbp, %rsp
+        machine.mainMem.write(4, new byte[]{0x20, 0x01, 0x00, (byte) 0x00});
+        // call 0x14
+        machine.mainMem.write(8, new byte[]{(byte)0x80, 0x00, 0x00, (byte) 0x14});
+        // halt
+        machine.mainMem.write(16, new byte[]{0x00, 0x00, 0x00, 0x00});
+        // irmovq 0x01, %r2
+        machine.mainMem.write(20, new byte[]{0x30, 0x02, (byte) 0x00, (byte) 0x01});
+        // rrmovq %r2, %r3
+        machine.mainMem.write(24, new byte[]{0x20, 0x23, 0x00, 0x00});
+        // addq %r2, %r3
+        machine.mainMem.write(28, new byte[]{0x60, 0x23, 0x00, 0x00});
         // irmovq 0x7C, %r4
-        machine.mainMem.write(12, new byte[]{0x30, 0x04, 0x00, (byte) 0x7C});
+        machine.mainMem.write(32, new byte[]{0x30, 0x04, 0x00, (byte) 0x7C});
         // rmmovq %r3, (%r4)
-        machine.mainMem.write(16, new byte[]{0x40, 0x34, 0x00, 0x00});
+        machine.mainMem.write(36, new byte[]{0x40, 0x34, 0x00, 0x00});
         // irmovq 0xA, %r5
-        machine.mainMem.write(20, new byte[]{0x30, 0x05, 0x00, (byte) 0x0A});
+        machine.mainMem.write(40, new byte[]{0x30, 0x05, 0x00, (byte) 0x05});
         // subq %r3, %r5
-        machine.mainMem.write(24, new byte[]{0x61, 0x35, 0x00, 0x00});
-        // jge 0x2A
-        machine.mainMem.write(28, new byte[]{0x75, 0x00, 0x00, 0x28});
+        machine.mainMem.write(44, new byte[]{0x61, 0x35, 0x00, 0x00});
+        // jge 0x38
+        machine.mainMem.write(48, new byte[]{0x75, 0x00, 0x00, 0x38});
         // jmp 0x08
-        machine.mainMem.write(32, new byte[]{0x70, 0x00, 0x00, 0x08});
-
+        machine.mainMem.write(52, new byte[]{0x70, 0x00, 0x00, 0x14});
+        // ret
+        machine.mainMem.write(56, new byte[]{(byte)0x90, 0x00, 0x00, 0x00});
     }
 
     class RunTask extends TimerTask {
@@ -349,6 +359,13 @@ public class Simulation extends JFrame implements ActionListener
         public void run() {
             machine.run();
             updateState();
+            
+            // If the machine is halted/error occured then stop the timer
+            if (machine.flags.getStatus() != "AOK") {
+                timer.cancel();
+                timer.purge();
+                isRunning = false;
+            }
         }
     }
 }

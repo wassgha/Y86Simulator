@@ -56,10 +56,13 @@ public class Microcode
             return;
         }
         
-        // If the instruction has a condition necessary for it to run
+        // If the instruction has a condition necessary for it to run then check whether
+        // it is satisfied or not
         
         if (condition != null) {
             conditionSatisfied = false;
+            // Note: Conditions are currently hard-coded. 
+            // This needs to change in the future (should be checked by the ALU)
             switch (condition) {
                 case "ZF":
                     conditionSatisfied=machine.flags.getZ();
@@ -203,6 +206,12 @@ public class Microcode
             case "A":  
                 value = machine.a.read();
                 break;
+            case "%rsp":  
+                value = machine.register[0].read();
+                break;
+            case "%rbp":  
+                value = machine.register[1].read();
+                break;
             case "R[arg1]":
                 value = machine.register[instruction_arg_1].read();
                 break;
@@ -261,6 +270,12 @@ public class Microcode
                 break;
             case "A":  
                 machine.a.write(valueToWrite);
+                break;
+            case "%rsp":  
+                machine.register[0].write(valueToWrite);
+                break;
+            case "%rbp":  
+                machine.register[1].write(valueToWrite);
                 break;
             case "R[arg1]":
                 machine.register[instruction_arg_1].write(valueToWrite);

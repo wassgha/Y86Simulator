@@ -151,4 +151,32 @@ public class FlagsTest
         aLU1.sub(false);
         assertTrue(flags.getS());
     }
+
+    @Test
+    public void testOverflowFlagTrueAdd()
+    {
+        Register a = new Register(4);
+        Register c = new Register(4);
+        Bus bus = new Bus(4);
+        Flags flags = new Flags();
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
+        a.writeInt(65100);
+        bus.writeInt(4000);
+        aLU1.add(false);
+        assertTrue(flags.getO());
+    }
+
+    @Test
+    public void testOverflowFlagTrueSub()
+    {
+        Register a = new Register(4);
+        Register c = new Register(4);
+        Bus bus = new Bus(4);
+        Flags flags = new Flags();
+        ALU aLU1 = new ALU(a, c, bus, flags, 65536);
+        a.writeInt(-1010);
+        bus.writeInt(65530);
+        aLU1.sub(false);
+        assertTrue(flags.getO());
+    }
 }

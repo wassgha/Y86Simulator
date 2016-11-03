@@ -12,8 +12,9 @@ public class RTN
 {
     HashMap<String, Byte> regCode;
     HashMap<String, Byte> opCode;
-    //HashMap<Byte, String> revRegCode;
-    //HashMap<Byte, String> revOpCode;
+    // Reverse lookup tables for Assembly Parser (to be implemented)
+    // HashMap<Byte, String> revRegCode;
+    // HashMap<Byte, String> revOpCode;
     
     // A HashMap containing each parsed RTN instruction and its list of assignments
     // (stored as a list of left and right operands)
@@ -61,8 +62,19 @@ public class RTN
             opCode.put("ret", (byte)0x90);        
             opCode.put("pushq", (byte)0xA0);        
             opCode.put("popq", (byte)0xB0);
-    
-            // Fill Reverse Operation Code Table
+            
+            // Fill Register Names table
+            regCode = new HashMap<String, Byte>();
+            regCode.put("%eax", (byte)0x0);
+            regCode.put("%ecx", (byte)0x1);
+            regCode.put("%edx", (byte)0x2);
+            regCode.put("%ebx", (byte)0x3);
+            regCode.put("%esp", (byte)0x4);
+            regCode.put("%ebp", (byte)0x5);
+            regCode.put("%esi", (byte)0x6);
+            regCode.put("%edi", (byte)0x7);
+
+            // Fill Reverse Operation Code Table  (for use with assembly parser)
             //         revOpCode = new HashMap<Byte, String>();
             //         revOpCode.put((byte)0x0, "halt");
             //         revOpCode.put((byte)0x10, "nop");
@@ -86,19 +98,8 @@ public class RTN
             //         revOpCode.put((byte)0x90, "ret");        
             //         revOpCode.put((byte)0xA0, "pushl");        
             //         revOpCode.put((byte)0xB0, "popl");
-    
-            // Fill Register Names table
-            regCode = new HashMap<String, Byte>();
-            regCode.put("%eax", (byte)0x0);
-            regCode.put("%ecx", (byte)0x1);
-            regCode.put("%edx", (byte)0x2);
-            regCode.put("%ebx", (byte)0x3);
-            regCode.put("%esp", (byte)0x4);
-            regCode.put("%ebp", (byte)0x5);
-            regCode.put("%esi", (byte)0x6);
-            regCode.put("%edi", (byte)0x7);
-    
-            // Fill Reverse Register Names table
+                
+            // Fill Reverse Register Names table (for use with assembly parser)
             //         revRegCode = new HashMap<Byte, String>();
             //         revRegCode.put((byte)0x0, "%eax");
             //         revRegCode.put((byte)0x1, "%ecx");
@@ -118,9 +119,7 @@ public class RTN
      */
     public void parseInstructions(String filename) {
         try {
-            System.out.println("******************************************");
             System.out.println("Parsing RTN (" + filename + ")...");
-            System.out.println("******************************************");
             // Initialize Scanner
             File file = new File(filename);
             Scanner input = new Scanner(file);
@@ -165,8 +164,8 @@ public class RTN
                     // Get the ISA (Y86) instruction name and re-initialize the current RTN instruction array
                     curInstructionName = inst_name_m.group(1).trim();
                     curInstruction = new ArrayList<Operands>();
-                    System.out.println();
-                    System.out.println("INSTRUCTION : " + curInstructionName + " CODE : " + String.format("0x%08X", opCode.get(curInstructionName)));                    
+                    //System.out.println();
+                    //System.out.println("INSTRUCTION : " + curInstructionName + " CODE : " + String.format("0x%08X", opCode.get(curInstructionName)));                    
                 } else if (instruction_match.find()) {
                     // An RTN instruction is always an assignment in the form :  variable←expression
                     
@@ -179,12 +178,12 @@ public class RTN
                         conditionList.put(opCode.get(curInstructionName), 
                         inst_cond_m.group(1).trim());
                         left_hand = inst_cond_m.group(2).trim();
-                        System.out.println("CONDITION " + inst_cond_m.group(1).trim());
+                        //System.out.println("CONDITION " + inst_cond_m.group(1).trim());
                     }
                     
                     // Add the operands to the list of instructions
                     curInstruction.add(new Operands(left_hand, right_hand));
-                    System.out.println("OPERAND1 : " + left_hand + ", OPERAND2 : " + right_hand);
+                    //System.out.println("OPERAND1 : " + left_hand + ", OPERAND2 : " + right_hand);
                 }
             }
             
@@ -192,6 +191,7 @@ public class RTN
             if(!curInstruction.isEmpty())
                 instructionList.put(opCode.get(curInstructionName), curInstruction);
             
+            System.out.println("Finished parsing RTN.");
             input.close();
         } catch (Exception e) {
             e.printStackTrace();

@@ -62,9 +62,30 @@ xorq:
 halt:
 
 pushq:
+	C←%rsp-4
+	MA←C
+	MD←R[arg1]
+	M[MA]←MD
+	%rsp←C
 
 popq:
+	C←%rsp+4
+	%rsp←C
+	MA←%rsp
+	MD←M[MA]
+	R[arg1]←MD
 
 call:
+	C←%rsp-4
+	MA←C
+	MD←PC
+	M[MA]←MD
+	%rsp←C
+	PC←arg1
 
 ret:
+	C←%rsp+4
+	%rsp←C
+	MA←%rsp
+	MD←M[MA]
+	PC←MD
