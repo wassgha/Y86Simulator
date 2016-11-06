@@ -18,7 +18,9 @@ You are welcome to try it and if there is a problem, please contact me or [make 
 ## Provided Demo Program
 The built-in demo program consists of the implementation of for loop that increments a counter and writes it to a memory location (0x7C) until the counter is equal to 5. The  program demonstrates most implemented Y86 instructions such as `mrmovq`, `rrmovq`, `irmovq`, `addq`, `jmp` and `jge` (conditional jump). The demo program also makes use of the `call`, return (`ret`) and `halt` instructions to demonstrate the memory stack implementation. The program is hard-coded in Simulation.java and is written to memory through byte arrays.
 
-![Demo Program](http://i.imgur.com/6gQMYYb.png)
+<p align="center">
+  <img src ="http://i.imgur.com/BM2B9ey.png" />
+</p>
 
 ```java
 public void writeDemoProgram() {
