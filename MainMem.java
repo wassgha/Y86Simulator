@@ -75,13 +75,13 @@ public class MainMem
      * @return hex representation of the memory content
      */
     public String[][] getContentHex() {
-        String[][] result = new String[memSize/wordSize][2];
-        for (int i = 0; i<memSize; i+=wordSize) {
-            byte[] word = new byte[wordSize];
+        String[][] result = new String[this.memSize/this.wordSize][2];
+        for (int i = 0; i<this.memSize; i+=this.wordSize) {
+            byte[] word = new byte[this.wordSize];
             
-            for (int j=i; j<i+wordSize; j++) {
+            for (int j=i; j<i+this.wordSize; j++) {
                 // if memory is size is not divisible by word size
-                if (j>=memSize) {
+                if (j>=this.memSize) {
                     word = null;
                     break;
                 }
@@ -90,7 +90,7 @@ public class MainMem
             }
 
             if (word != null)
-                result[i/wordSize] = new String[]{
+                result[i/this.wordSize] = new String[]{
                     byteToHex(new byte[]{(byte) i}),
                     byteToHex(word)
                 };

@@ -21,9 +21,8 @@ public class Simulation extends JFrame implements ActionListener
     private JTable    memTable;
     private String[][] memTableData;
 
-    private int numReg, wordSize;              // Counter's value
-    private String rtnFile;
-    private String[] allowedALUOps;
+
+    private String rtnFile, configFile;
     
     private Machine machine; // Make a new CPU
     
@@ -40,20 +39,17 @@ public class Simulation extends JFrame implements ActionListener
      */
     public Simulation()
     {
-        
-        wordSize = 4; // 4 * 8 bits = 32 bit word size
-        numReg = 2 + 6; // number of general registers
         rtnFile = "rtn.txt";
-        allowedALUOps = new String[] {"+", "-", "*", "&"};
+        configFile = "config.properties";
         
         // Create a machine simulator 
-        machine = new Machine(wordSize, numReg, wordSize, allowedALUOps, rtnFile);
+        machine = new Machine(configFile, rtnFile);
         
         // Length of field that displays the content of registers
         // Each register is a quad word (4 * wordSize) and each 4
         // bits are represented with 1 hex number. We also add spaces
         // between every two hex numbers
-        int regTextFieldLength = 8 * wordSize + 4 * wordSize;
+        int regTextFieldLength = 48;
         
         
         getContentPane().setLayout(
@@ -64,7 +60,7 @@ public class Simulation extends JFrame implements ActionListener
         ((JComponent)getContentPane()).setBorder( 
         BorderFactory.createEmptyBorder( 10, 10, 10, 10) );
 
-        register_vals = new JTextField[numReg];
+        register_vals = new JTextField[machine.numReg];
 
         // "super" Frame (a Container) sets its layout to FlowLayout, which arranges
         // the components from left-to-right, and flow to next row from top-to-bottom.
@@ -157,9 +153,9 @@ public class Simulation extends JFrame implements ActionListener
         p3.add(c_val);
         
         JPanel p4 = new JPanel();
-        p4.setLayout(new GridLayout(numReg/2,2, 10, 10));
+        p4.setLayout(new GridLayout((machine.numReg)/2,2, 10, 10));
         
-        for (int i = 0; i<numReg; i++) {
+        for (int i = 0; i<machine.numReg; i++) {
             p4.add(new JLabel("%r" + (i<=1?(i==0?"sp":"bp"):i) + " : ", SwingConstants.CENTER));
             register_vals[i] = new JTextField(machine.register[i].readHex(), SwingConstants.LEFT);
             register_vals[i].setEditable(false);
@@ -168,7 +164,7 @@ public class Simulation extends JFrame implements ActionListener
         
 
         setTitle("Y86 Machine Simulator (Wassim Gharbi)");  // "super" Frame sets its title
-        setSize(650, 500+50*(numReg/2));             // "super" Frame sets its initial window size
+        setSize(650, 500+50*(machine.numReg/2));             // "super" Frame sets its initial window size
         //setResizable(false);
         
         // Add Simulation Control Pane
@@ -222,7 +218,7 @@ public class Simulation extends JFrame implements ActionListener
         } else if(evt.getActionCommand().equals("Reset")) {
             
             // Reset removes the old machine and makes a new one
-            machine = new Machine(wordSize, numReg, wordSize, allowedALUOps, rtnFile);
+            machine = new Machine(configFile, rtnFile);
             if (isRunning) {
                 timer.cancel();
                 timer.purge();
@@ -282,7 +278,7 @@ public class Simulation extends JFrame implements ActionListener
         
         memTable.setPreferredScrollableViewportSize(new Dimension(200, 700));
         memTable.setFillsViewportHeight(true);
-        int curInstructionAddress = machine.pc.readInt()/wordSize;
+        int curInstructionAddress = machine.pc.readInt()/machine.wordSize;
         memTable.setRowSelectionInterval(curInstructionAddress, curInstructionAddress);
         
         JScrollPane js=new JScrollPane(memTable);
@@ -314,7 +310,7 @@ public class Simulation extends JFrame implements ActionListener
         status_val.setText(machine.flags.getStatus());
         
         // Update general registers
-        for (int i = 0; i<numReg; i++) {
+        for (int i = 0; i<machine.numReg; i++) {
             register_vals[i].setText(machine.register[i].readHex());
         }
         
