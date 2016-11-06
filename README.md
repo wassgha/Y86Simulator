@@ -16,7 +16,6 @@ You are welcome to try it and if there is a problem, please contact me or [make 
 * To visualize class relationships please use BlueJ
 
 ## Provided Demo Program
-### While Loop
 The current demo program is a consists of the implementation of for loop that increments a counter and writes it to a memory location (0x7C) until the counter is equal to 5. The  program demonstrates most implemented Y86 instructions such as `mrmovq`, `rrmovq`, `irmovq`, `addq`, `jmp` and `jge` (conditional jump). The demo program also makes use of the `call`, return (`ret`) and `halt` instructions to demonstrate the memory stack implementation. The program is hard-coded in Simulation.java and is written to memory through byte arrays.
 
 ![Demo Program](http://i.imgur.com/6gQMYYb.png)
