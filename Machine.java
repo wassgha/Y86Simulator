@@ -10,7 +10,7 @@ public class Machine
     public MainMem mainMem;
     public Register[] register;
     public int wordSize, numReg, busSize, memSize, maxImmediate, maxAddress;
-    public Register pc, ir, md, ma, a, c, rsp, rbp;
+    public Register pc, ir, md, ma, a, c;
     public ALU alu;
     public Bus bus;
     public Flags flags;
@@ -51,8 +51,6 @@ public class Machine
         this.ma = new Register(wordSize);
         this.a = new Register(wordSize);
         this.c = new Register(wordSize);
-        this.rsp = new Register(wordSize);
-        this.rbp = new Register(wordSize);
         
         this.bus = new Bus(busSize, wordSize);
         

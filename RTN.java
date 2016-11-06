@@ -10,7 +10,6 @@ import java.util.regex.*;
  */
 public class RTN
 {
-    HashMap<String, Byte> regCode;
     HashMap<String, Byte> opCode;
     // Reverse lookup tables for Assembly Parser (to be implemented)
     // HashMap<Byte, String> revRegCode;
@@ -63,16 +62,6 @@ public class RTN
             opCode.put("pushq", (byte)0xA0);        
             opCode.put("popq", (byte)0xB0);
             
-            // Fill Register Names table
-            regCode = new HashMap<String, Byte>();
-            regCode.put("%eax", (byte)0x0);
-            regCode.put("%ecx", (byte)0x1);
-            regCode.put("%edx", (byte)0x2);
-            regCode.put("%ebx", (byte)0x3);
-            regCode.put("%esp", (byte)0x4);
-            regCode.put("%ebp", (byte)0x5);
-            regCode.put("%esi", (byte)0x6);
-            regCode.put("%edi", (byte)0x7);
 
             // Fill Reverse Operation Code Table  (for use with assembly parser)
             //         revOpCode = new HashMap<Byte, String>();
@@ -98,17 +87,6 @@ public class RTN
             //         revOpCode.put((byte)0x90, "ret");        
             //         revOpCode.put((byte)0xA0, "pushl");        
             //         revOpCode.put((byte)0xB0, "popl");
-                
-            // Fill Reverse Register Names table (for use with assembly parser)
-            //         revRegCode = new HashMap<Byte, String>();
-            //         revRegCode.put((byte)0x0, "%eax");
-            //         revRegCode.put((byte)0x1, "%ecx");
-            //         revRegCode.put((byte)0x2, "%edx");
-            //         revRegCode.put((byte)0x3, "%ebx");
-            //         revRegCode.put((byte)0x4, "%esp");
-            //         revRegCode.put((byte)0x5, "%ebp");
-            //         revRegCode.put((byte)0x6, "%esi");
-            //         revRegCode.put((byte)0x7, "%edi");
     }
     
     /**

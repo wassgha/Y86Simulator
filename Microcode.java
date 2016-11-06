@@ -12,7 +12,6 @@ import java.lang.*;
 public class Microcode
 {
     HashMap<String, Byte> opCode;
-    HashMap<String, Byte> regCode;
     Machine machine;
     
     public Microcode(Machine machine)
