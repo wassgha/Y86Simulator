@@ -9,10 +9,12 @@ public class Bus
 {
     private byte[] data;
     private int busSize;
+    private int wordSize;
 
-    public Bus(int busSize)
+    public Bus(int busSize, int wordSize)
     {
         this.busSize = busSize;
+        this.wordSize = wordSize;
         data = new byte[busSize];
     }
 
@@ -33,7 +35,7 @@ public class Bus
      */
     public void writeInt(int stream) {
         // This method won't work if the bus size is less than int's size
-        if (busSize < 4) return;
+        if (busSize < wordSize) return;
         data = ByteBuffer.allocate(busSize).putInt(stream).array();
     }
     
@@ -55,7 +57,7 @@ public class Bus
      */
     public int readInt()
     {
-        ByteBuffer bb = ByteBuffer.allocate(4).put(data);
+        ByteBuffer bb = ByteBuffer.allocate(wordSize).put(data);
 
         return bb.getInt(0);
     }

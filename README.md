@@ -24,19 +24,34 @@ The current demo program is a primitive while loop that increments a counter and
 ```java
 public void writeDemoProgram() {
   // pos 0
-  machine.mainMem.write(0, new byte[]{0x0, 0x0, 0x0, 0x0});
-  // irmovq 0x666, %r1
-  machine.mainMem.write(4, new byte[]{0x30, 0x01, 0x00, 0x01});
-  // rrmovq %r1, %r3
-  machine.mainMem.write(8, new byte[]{0x20, 0x13, 0x00, 0x00});
-  // addq %r1, %r3
-  machine.mainMem.write(12, new byte[]{0x60, 0x13, 0x00, 0x00});
+  // irmovq 0xCC, %rbp
+  machine.mainMem.write(0, new byte[]{0x30, 0x01, 0x00, (byte) 0xCC});
+  // rrmovq %rbp, %rsp
+  machine.mainMem.write(4, new byte[]{0x20, 0x10, 0x00, (byte) 0x00});
+  // call 0x14
+  machine.mainMem.write(8, new byte[]{(byte)0x80, 0x00, 0x00, (byte) 0x14});
+  // halt
+  machine.mainMem.write(16, new byte[]{0x00, 0x00, 0x00, 0x00});
+  // irmovq 0x01, %r2
+  machine.mainMem.write(20, new byte[]{0x30, 0x02, (byte) 0x00, (byte) 0x01});
+  // rrmovq %r2, %r3
+  machine.mainMem.write(24, new byte[]{0x20, 0x23, 0x00, 0x00});
+  // addq %r2, %r3
+  machine.mainMem.write(28, new byte[]{0x60, 0x23, 0x00, 0x00});
   // irmovq 0x7C, %r4
-  machine.mainMem.write(16, new byte[]{0x30, 0x04, 0x00, (byte) 0x7C});
+  machine.mainMem.write(32, new byte[]{0x30, 0x04, 0x00, (byte) 0x7C});
   // rmmovq %r3, (%r4)
-  machine.mainMem.write(20, new byte[]{0x40, 0x34, 0x00, 0x00});
-  // jmp 0x0C
-  machine.mainMem.write(24, new byte[]{0x70, 0x0, 0x0, 0xC});
+  machine.mainMem.write(36, new byte[]{0x40, 0x34, 0x00, 0x00});
+  // irmovq 0xA, %r5
+  machine.mainMem.write(40, new byte[]{0x30, 0x05, 0x00, (byte) 0x05});
+  // subq %r3, %r5
+  machine.mainMem.write(44, new byte[]{0x61, 0x35, 0x00, 0x00});
+  // jge 0x38
+  machine.mainMem.write(48, new byte[]{0x75, 0x00, 0x00, 0x38});
+  // jmp 0x08
+  machine.mainMem.write(52, new byte[]{0x70, 0x00, 0x00, 0x1C});
+  // ret
+  machine.mainMem.write(56, new byte[]{(byte)0x90, 0x00, 0x00, 0x00});
 }
 ```
 

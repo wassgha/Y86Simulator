@@ -54,7 +54,7 @@ public class Machine
         this.rsp = new Register(wordSize);
         this.rbp = new Register(wordSize);
         
-        this.bus = new Bus(busSize);
+        this.bus = new Bus(busSize, wordSize);
         
         this.alu = new ALU(a, c, bus, flags, maxImmediate);
         

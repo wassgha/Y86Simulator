@@ -84,8 +84,8 @@ call:
 	PC←arg1
 
 ret:
+	MA←%rsp
 	C←%rsp+4
 	%rsp←C
-	MA←%rsp
 	MD←M[MA]
 	PC←MD

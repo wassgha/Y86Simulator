@@ -45,7 +45,7 @@ public class ALUTest
     {
         Register a = new Register(4);
         Register c = new Register(4);
-        Bus bus = new Bus(4);
+        Bus bus = new Bus(4, 4);
         Flags flags = new Flags();
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         aLU1.add(false);
@@ -57,7 +57,7 @@ public class ALUTest
     {
         Register a = new Register(4);
         Register c = new Register(4);
-        Bus bus = new Bus(4);
+        Bus bus = new Bus(4, 4);
         Flags flags = new Flags();
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         bus.writeInt(5);
@@ -70,7 +70,7 @@ public class ALUTest
     {
         Register a = new Register(4);
         Register c = new Register(4);
-        Bus bus = new Bus(4);
+        Bus bus = new Bus(4, 4);
         Flags flags = new Flags();
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(2);
@@ -84,7 +84,7 @@ public class ALUTest
     {
         Register a = new Register(4);
         Register c = new Register(4);
-        Bus bus = new Bus(4);
+        Bus bus = new Bus(4, 4);
         Flags flags = new Flags();
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         a.writeInt(3002010);
@@ -98,7 +98,7 @@ public class ALUTest
     {
         Register a = new Register(4);
         Register c = new Register(4);
-        Bus bus = new Bus(4);
+        Bus bus = new Bus(4, 4);
         Flags flags = new Flags();
         ALU aLU1 = new ALU(a, c, bus, flags, 65536);
         bus.writeInt(5);

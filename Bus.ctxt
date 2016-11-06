@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=busSize
-comment0.target=Bus(int)
+comment0.params=busSize\ wordSize
+comment0.target=Bus(int,\ int)
 comment1.params=stream
 comment1.target=void\ write(byte[])
 comment1.text=\n\ Write\ to\ bus\ (word\ sized\ data)\n\ \n\ @param\ \ stream\ the\ data\ to\ write\n

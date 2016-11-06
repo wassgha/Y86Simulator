@@ -327,7 +327,7 @@ public class Simulation extends JFrame implements ActionListener
         // irmovq 0xCC, %rbp
         machine.mainMem.write(0, new byte[]{0x30, 0x01, 0x00, (byte) 0xCC});
         // rrmovq %rbp, %rsp
-        machine.mainMem.write(4, new byte[]{0x20, 0x01, 0x00, (byte) 0x00});
+        machine.mainMem.write(4, new byte[]{0x20, 0x10, 0x00, (byte) 0x00});
         // call 0x14
         machine.mainMem.write(8, new byte[]{(byte)0x80, 0x00, 0x00, (byte) 0x14});
         // halt
@@ -349,7 +349,7 @@ public class Simulation extends JFrame implements ActionListener
         // jge 0x38
         machine.mainMem.write(48, new byte[]{0x75, 0x00, 0x00, 0x38});
         // jmp 0x08
-        machine.mainMem.write(52, new byte[]{0x70, 0x00, 0x00, 0x14});
+        machine.mainMem.write(52, new byte[]{0x70, 0x00, 0x00, 0x1C});
         // ret
         machine.mainMem.write(56, new byte[]{(byte)0x90, 0x00, 0x00, 0x00});
     }
