@@ -165,6 +165,9 @@ public class Microcode
             case "|":
                 machine.alu.or(fetch);
                 break;
+            case "~":
+                machine.alu.not(fetch);
+                break;
             default :
                 machine.flags.setStatus("INS");
                 System.out.println("Unsupported ALU instruction (" + ALUOp + ")");
