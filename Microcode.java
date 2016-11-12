@@ -19,6 +19,9 @@ public class Microcode
         this.machine = machine;
     }
     
+    /**
+     * Method fetchExec performs the fetch-execute cycle
+     */
     public void fetchExec() {
         // Fetch The Instruction
         executeRTNOperations(null, true);
@@ -26,6 +29,13 @@ public class Microcode
         executeRTNOperations(machine.ir.read(), false);
     }
     
+    /**
+     * Method executeRTNOperations gets the RTN definition of the instruction then performs the RTN
+     * commands one by one if the condition is satisfied
+     *
+     * @param instruction the instruction (array of word-sized bytes)
+     * @param fetch determines whether this is the fetch operation or not (fetch operation's definition is stored separately in the RTN)
+     */
     public void executeRTNOperations(byte[] instruction, boolean fetch) {
         // If instruction is halt then terminate
         if(!fetch && instruction[0] == 0x0){
@@ -139,6 +149,14 @@ public class Microcode
         }       
     }
     
+    /**
+     * Method performALUOp, translates the arithmetic operation given as a string to a method from the ALU
+     * and executes it (results always stored in register C)
+     *
+     * @param ALUOp the arithmetic operation (string, one of "+", "-", etc)
+     * @param immediateVal if the operation is an increment/decrement operation then use the value to perform the operation
+     * @param fetch true if this is the fetch operation, prevents updating flags
+     */
     public void performALUOp(String ALUOp, Integer immediateVal, boolean fetch) {
         switch(ALUOp) {
             case "+":
@@ -175,6 +193,13 @@ public class Microcode
         }
     }
     
+    /**
+     * Method readOperandValueToBus reads the value of the register indicated by the operand
+     * and writes it to the system bus
+     *
+     * @param operand the right operand of the assignment (either a register name or an argument of the instruction)
+     * @param instruction the instruction itself (used to get the arguments)
+     */
     public void readOperandValueToBus(String operand, byte[] instruction) {
         int instruction_code_1 = 0, instruction_code_2 = 0, instruction_arg_1 = 0, instruction_arg_2 = 0;
         if (instruction != null) {
@@ -224,15 +249,26 @@ public class Microcode
                 if (instruction_code_1 == 7 || instruction_code_1 == 8) {
                     // if the instruction is a jump or a call then the
                     // first argument is a memory address that begins at byte 1
+                    // therefore it is just the instruction without the opCode
                     value = instruction.clone();
                     value[0] = 0x0;
                 } else {
                     // if not then the instruction is an immediate move therefore
                     // the first argument is an immediate value that begins at byte 2
+                    // therefore it is the instruction without the opCode and register specifiers
                     value = instruction.clone();
                     value[0] = 0x0;
                     value[1] = 0x0;
                 }
+                break;
+            case "ZF":
+                value = machine.flags.getZ() ? new byte[]{0x0,0x0,0x0,0x1} : new byte[]{0x0,0x0,0x0,0x0};
+                break;
+            case "SF":
+                value = machine.flags.getS() ? new byte[]{0x0,0x0,0x0,0x1} : new byte[]{0x0,0x0,0x0,0x0};
+                break;
+            case "OF":
+                value = machine.flags.getO() ? new byte[]{0x0,0x0,0x0,0x1} : new byte[]{0x0,0x0,0x0,0x0};
                 break;
            default: 
                 machine.flags.setStatus("INS");
