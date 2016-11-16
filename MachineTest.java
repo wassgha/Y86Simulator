@@ -39,4 +39,15 @@ public class MachineTest
     public void tearDown()
     {
     }
+
+    @Test
+    public void testConfiguration()
+    {
+        Machine machine1 = new Machine("config.properties", "rtn.txt");
+        machine1.parseConfig("config.properties");
+        assertEquals(machine1.wordSize, 4);
+        assertEquals(machine1.numReg, 6);
+        assertEquals(machine1.busSize, 4);
+    }
 }
+

@@ -88,6 +88,9 @@ public class Microcode
                 case "~ZF":
                     conditionSatisfied=!(machine.flags.getZ());
                     break;
+                case "(SF<>OF)|ZF":
+                    conditionSatisfied=(machine.flags.getS() != machine.flags.getO()) || machine.flags.getZ();
+                    break;
                 default:
                     machine.flags.setStatus("INS");
                     System.out.println("Unsupported condition");

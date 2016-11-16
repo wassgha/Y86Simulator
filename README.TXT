@@ -11,5 +11,5 @@ Y86 Instruction Set Architechture
 VERSION or DATE: October 31st
 HOW TO START THIS PROJECT: To run this project use “java Simulation”
 AUTHORS: Wassim Gharbi
-USER INSTRUCTIONS: Modify config.txt and rtn.txt to play with different
+USER INSTRUCTIONS: Modify config.properties and rtn.txt to play with different
 combinations of parameters for the virtual processor

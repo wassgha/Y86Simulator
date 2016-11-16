@@ -1,3 +1,4 @@
+import java.nio.*;
 import java.util.*;
 /**
  * The Main Memory (byte-addressed memory simulation), holds code and data in a linear data structure
@@ -35,6 +36,18 @@ public class MainMem
         byte[] result = new byte[wordSize];
         System.arraycopy(mem, addr, result, 0, wordSize);   
         return result;
+    }
+
+    /**
+     * Access memory data data (as integer, for testing purposes only)
+     * 
+     * @return data at address specified
+     */
+    public int readInt(int addr)
+    {
+        ByteBuffer bb = ByteBuffer.allocate(4).put(read(addr));
+
+        return bb.getInt(0);
     }
     
     /**

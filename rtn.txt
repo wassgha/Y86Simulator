@@ -33,6 +33,9 @@ jge:
 jl:
 	(SF<>OF)→PC←arg1
 
+jle:
+	((SF<>OF)|ZF)→PC←arg1
+
 jg:
 	((~ZF)&(SF=OF))→PC←arg1
 
@@ -45,8 +48,8 @@ addq:
 	R[arg2]←C
 
 subq:
-	A←R[arg1]
-	C←A-R[arg2]
+	A←R[arg2]
+	C←A-R[arg1]
 	R[arg2]←C
 
 andq:
